@@ -330,6 +330,7 @@ export const TGP = {
           G.hand[id].push(c[0]);
           ctx.events.setActivePlayers({value: {[id]: 'trade'}, moveLimit: 1});
           G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
+          G.trade[ctx.currentPlayer] = false;
           G.tradeNum--;
         },
         playMaster: (G, ctx) => {
@@ -373,7 +374,7 @@ export const TGP = {
     }
     if (G.completed[0] !== -1 && G.completed[1] !== -1 && G.completed[2] !== -1)
       return {winner: ['0', '1', '2'] };
-    if (G.catRound === 3) {
+    if (G.catRound === 10) {
       return {winner: ['3']};
     }
   }
