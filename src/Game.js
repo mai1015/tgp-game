@@ -367,10 +367,10 @@ export const TGP = {
     if (G.turns[0] + G.turns[1] + G.turns[2] + G.turns[3] === 44) {
       G.turns = Array(ctx.numPlayers).fill(0);
       G.catRound++;
-      if (!G.ufoBuild) {
-        return {winner: '3'};
-      }
-      G.ufoBuild = false;
+      // if (!G.ufoBuild) {
+      //   return {winner: '3'};
+      // }
+      // G.ufoBuild = false;
     }
     if (G.completed[0] !== -1 && G.completed[1] !== -1 && G.completed[2] !== -1)
       return {winner: ['0', '1', '2'] };

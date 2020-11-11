@@ -18,6 +18,7 @@ export const GameBoard = (props) => {
             <div id="main">
                 <div id="info">
                     {winner}
+                    <p>Round: {props.G.catRound} -- {props.G.turns[0] + props.G.turns[1] + props.G.turns[2] + props.G.turns[3]}</p>
                     <p>Junk Card: {props.G.matCard.length} left</p>
                     <p>Ant Card: {props.G.antCard.length} left</p>
                     <p>App Card: {props.G.appCard.length} left</p>
