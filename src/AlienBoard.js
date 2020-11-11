@@ -27,7 +27,7 @@ export const AlienBoard = (props) => {
     // console.log(props);
     return (
         <div className="player board">
-            <p>{props.playerID}: {props.isActive ? "your turn" : "wait"}</p>
+            <p>{props.playerID}: now is {props.isActive ? "your turn" : props.ctx.currentPlayer + "turn"}</p>
             <p>my resource- Stone: <span>{props.G.resource[props.playerID].Stone}</span> Steel: <span>{props.G.resource[props.playerID].Steel}</span> Fuel: <span>{props.G.resource[props.playerID].Fuel}</span></p>
             <div className="cards">
                 {props.G.hand[props.playerID] ?

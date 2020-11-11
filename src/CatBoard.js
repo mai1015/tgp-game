@@ -27,8 +27,7 @@ export const CatBoard = (props) => {
     // console.log(props);
     return (
         <div className="board">
-            <p>{props.playerID}</p>
-            <p>{props.isActive ? "your turn" : "wait"}</p>
+            <p>{props.playerID}: now is {props.isActive ? "your turn" : props.ctx.currentPlayer + "turn"}</p>
 
             <div className="cards">
                 {props.G.hand[props.playerID] ?
