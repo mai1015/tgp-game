@@ -240,6 +240,16 @@ export const TGP = {
                 G.hand[ctx.currentPlayer].push(c);
               }
             }
+          },
+          useSkill: {
+            moves: {
+              useSkill: () => {
+
+              },
+              noUse: () => {
+
+              }
+            }
           }
         },
       },
@@ -346,16 +356,5 @@ export const TGP = {
     // if (IsDraw(G.cells)) {
     //   return { draw: true };
     // }
-  },
-  ai: {
-    enumerate: (G, ctx) => {
-      let moves = [];
-      for (let i = 0; i < 9; i++) {
-        if (G.cells[i] === null) {
-          moves.push({ move: 'clickCell', args: [i] });
-        }
-      }
-      return moves;
-    },
   }
 };
