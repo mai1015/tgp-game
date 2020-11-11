@@ -8,6 +8,8 @@ import './App.css';
 const { protocol, hostname, port } = window.location;
 let server = `${protocol}//${hostname}`;
 if (port) server += `:${port}`;
+if (process.env.NODE_ENV !== 'production')
+    server = "localhost:8000";
 
 const Board = Client({ game: TGP, board: GameBoard, numPlayers: 4, multiplayer: SocketIO({ server })});
 

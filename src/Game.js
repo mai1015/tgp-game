@@ -8,6 +8,8 @@ function removeResource(arr, type, value) {
     if (arr[i].name === type && v <= arr[i].value) {
       arr[i].value -= v;
       arr[i].modify = true;
+      if (arr[i].value === 0)
+        arr.splice(i, 1);
       return true;
     }
   }
@@ -224,8 +226,22 @@ export const TGP = {
               console.log("moved");
               G.skip[next] = false;
             }
+          } else {
+            G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
           }
-        }
+        },
+        stages: {
+          trade: {
+            moves: {
+              choose: (G, ctx, id) => {
+                console.log(ctx);
+                let c = G.hand[ctx.playerID].splice(id, 1)[0];
+                G.resource[ctx.playerID] = updateResource(G.hand[ctx.playerID]);
+                G.hand[ctx.currentPlayer].push(c);
+              }
+            }
+          }
+        },
       },
       onBegin: (G, ctx) => {
         G.hand['3'].push(G.appCard.pop());
@@ -283,9 +299,10 @@ export const TGP = {
           // }
         },
         trade: (G, ctx, id, card) => {
-          if (G.tradeNum < 1) return INVALID_MOVE;
-          if (!G.draws[ctx.currentPlayer] || !G.trade[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
-          G.hand[ctx.currentPlayer].splice(card, 1);
+          // if (G.tradeNum < 1) return INVALID_MOVE;
+          // if (!G.trade[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
+          const c = G.hand[ctx.currentPlayer].splice(card, 1);
+          G.hand[id].push(c[0]);
           ctx.events.setActivePlayers({value: {[id]: 'trade'}, moveLimit: 1});
           G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
         },
