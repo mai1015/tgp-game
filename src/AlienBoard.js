@@ -26,53 +26,9 @@ export const AlienBoard = (props) => {
     }
     // console.log(props);
     return (
-        <div className="player">
-            <p>{props.playerID}</p>
-            <p>{props.isActive ? "your turn" : "wait"}</p>
-            {/*<p>{props.isMultiplayer ? "multiplayer" : "local"}</p>*/}
-            <p>Junk Card: {props.G.matCard.length} left</p>
-            <p>Ant Card: {props.G.antCard.length} left</p>
-            <p>App Card: {props.G.appCard.length} left</p>
-            <p><b>ufo list:</b></p>
-            <ul>
-                {props.G.ufo.map((v, i) => v !== 0 && i !== 3 ?
-                    <li>{props.G.completed[i] !== -1 ? <img src={"./cards/ufo-" + v + ".png"} alt="ufo"/> :
-                        <img src={"./cards/ufo-" + v + "-back.png"} alt="ufo"/>}</li> : null)}
-            </ul>
-            <p><b>other player's card</b></p>
-            <div className="otherplayer">
-                {props.G.hand.map((v, i) => i != props.playerID && i !== 3 ?
-                    (<>
-                        <p>player: {i}</p>
-                        {v.length > 0 ?
-                            <div className="cards">{v.map((c) => <CardComponent {...c} />)}</div> : "no card yet"
-                        }
-                    </>) : null
-                )}
-            </div>
-            <p><b>ant card list:</b></p>
-            <div className="otherplayer">
-                {props.G.antHand.map((v, i) => i != props.playerID && i !== 3 ?
-                    (<>
-                        <p>player: {i}</p>
-                        {v.length > 0 ?
-                            <div className="cards">{v.map((c) => <CardComponent {...c} />)}</div> : "no card yet"
-                        }
-                    </>) : null
-                )}
-            </div>
-            <p>resource</p>
-            <ul className="resource">
-                <li>
-                    <p>Stone: <span>{props.G.resource[props.playerID].Stone}</span></p>
-                </li>
-                <li>
-                    <p>Steel: <span>{props.G.resource[props.playerID].Steel}</span></p>
-                </li>
-                <li>
-                    <p>Fuel: <span>{props.G.resource[props.playerID].Fuel}</span></p>
-                </li>
-            </ul>
+        <div className="player board">
+            <p>{props.playerID}: {props.isActive ? "your turn" : "wait"}</p>
+            <p>my resource- Stone: <span>{props.G.resource[props.playerID].Stone}</span> Steel: <span>{props.G.resource[props.playerID].Steel}</span> Fuel: <span>{props.G.resource[props.playerID].Fuel}</span></p>
             <div className="cards">
                 {props.G.hand[props.playerID] ?
                     props.G.hand[props.playerID].map((v, i) => <CardComponent {...v} onClick={v => {
@@ -86,11 +42,11 @@ export const AlienBoard = (props) => {
                     }} key={i}/>) :
                     null}
             </div>
-            {props.G.ufo[props.playerID] !== 0 &&
-            (props.G.completed[props.playerID] !== -1 ?
-                <img src={"./cards/ufo-" + props.G.ufo[props.playerID] + ".png"} alt="ufo"/> :
-                <img src={"./cards/ufo-" + props.G.ufo[props.playerID] + "-back.png"} alt="ufo"/>)
-            }
+            {/*{props.G.ufo[props.playerID] !== 0 &&*/}
+            {/*(props.G.completed[props.playerID] !== -1 ?*/}
+            {/*    <img src={"./cards/ufo-" + props.G.ufo[props.playerID] + ".png"} alt="ufo"/> :*/}
+            {/*    <img src={"./cards/ufo-" + props.G.ufo[props.playerID] + "-back.png"} alt="ufo"/>)*/}
+            {/*}*/}
             {props.isActive
             && props.G.ufo[props.playerID] === 0
             && <ChooseUFOComponent onClick={props.moves.choose}/>}
