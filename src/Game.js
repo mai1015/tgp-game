@@ -157,6 +157,8 @@ function updateResource(hand) {
   return ret;
 }
 
+
+
 export const TGP = {
   setup: (ctx) => ({
     matCard: genCards(d.MAT, d.NUM_MAT, d.TYPE_MAT, d.CARD_MAT, {type: 'MAT'}),
@@ -170,9 +172,10 @@ export const TGP = {
     ufo: Array(ctx.numPlayers).fill(0),
     ufoBuild: false,
     resource: Array(ctx.numPlayers).fill({'Fuel': 0, 'Steel': 0, 'Stone': 0}),
-    catTurn: 0,
+    turns: Array(ctx.numPlayers).fill(0),
     catRound: 0,
     master: MASTER_CARD,
+    masterUsed: false,
     tradeNum: 30,
     skip: Array(ctx.numPlayers).fill(false),
     skillUsed: Array(ctx.numPlayers).fill(0)
@@ -228,6 +231,11 @@ export const TGP = {
             }
           } else {
             G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
+            if (G.turn[3] === 33) {
+              let nt = ctx.playOrder;
+              nt.push(nt.shift());
+              console.log("moved");
+            }
           }
         },
         stages: {
@@ -272,6 +280,7 @@ export const TGP = {
           // }
           G.hand[ctx.currentPlayer].push(G.appCard.pop());
           G.draws[ctx.currentPlayer] = true;
+          ctx.events.endTurn();
         },
         drawAnt: (G, ctx) => {
           if (G.draws[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
@@ -304,20 +313,35 @@ export const TGP = {
         },
         useSkill: (G, ctx) => {
           if (!G.completed[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
-          // switch (G.ufo[ctx.currentPlayer]) {
-          //
-          // }
+          switch (G.ufo[ctx.currentPlayer]) {
+            case 2:
+              G.catTurn -= 6;
+              break;
+            case 3:
+              G.hand[3] = [G.hand[3][2]];
+              G.hand[3].push(G.appCard.pop());
+              G.hand[3].push(G.appCard.pop());
+          }
         },
         trade: (G, ctx, id, card) => {
-          // if (G.tradeNum < 1) return INVALID_MOVE;
-          // if (!G.trade[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
+          if (G.tradeNum < 1) return INVALID_MOVE;
+          if (!G.trade[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
           const c = G.hand[ctx.currentPlayer].splice(card, 1);
           G.hand[id].push(c[0]);
           ctx.events.setActivePlayers({value: {[id]: 'trade'}, moveLimit: 1});
           G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
+          G.tradeNum--;
         },
         playMaster: (G, ctx) => {
+          if (ctx.currentPlayer !== '3' || G.masterUsed) return INVALID_MOVE;
           G.antCard = [];
+          ctx.events.endTurn();
+          G.masterUsed = true;
+        },
+        replaceCard: (G, ctx, i) => {
+          if (ctx.currentPlayer !== '3') return INVALID_MOVE;
+          const c = G.hand['3'].splice(i, 1)[0];
+          G.hand[ctx.currentPlayer].push(G.appCard.pop());
         }
       }
     }
@@ -339,10 +363,12 @@ export const TGP = {
     }
   },
   endIf: (G, ctx) => {
-    if (G.catTurn === 33) {
-      G.catTurn = 0;
+    if (G.turn.reduce((a, b) => a + b, 0) === 44) {
+      G.turn = Array(ctx.numPlayers).fill(0);
       G.catRound++;
-      if (!G.ufoBuild) return { winner: '3' };
+      if (!G.ufoBuild) {
+        return {winner: '3'};
+      }
       G.ufoBuild = false;
     }
     if (G.completed[0] !== -1 && G.completed[1] !== -1 && G.completed[2] !== -1)
@@ -350,11 +376,5 @@ export const TGP = {
     if (G.catRound === 3) {
       return {winner: ['3']};
     }
-    // if (IsVictory(G.cells)) {
-    //   return { winner: ctx.currentPlayer };
-    // }
-    // if (IsDraw(G.cells)) {
-    //   return { draw: true };
-    // }
   }
 };
