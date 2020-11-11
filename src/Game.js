@@ -221,7 +221,6 @@ export const TGP = {
         onEnd: (G, ctx) => {
           const next = ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
           if (ctx.currentPlayer === '3') {
-            G.catTurn++;
             if (G.skip[next]) {
               let nt = ctx.playOrder;
               nt.push(nt.shift());
@@ -231,12 +230,13 @@ export const TGP = {
             }
           } else {
             G.resource[ctx.currentPlayer] = updateResource(G.hand[ctx.currentPlayer]);
-            if (G.turn[3] === 33) {
+            if (G.turns[3] === 33) {
               let nt = ctx.playOrder;
               nt.push(nt.shift());
               console.log("moved");
             }
           }
+          G.turns[ctx.currentPlayer]++;
         },
         stages: {
           trade: {
@@ -315,7 +315,7 @@ export const TGP = {
           if (!G.completed[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
           switch (G.ufo[ctx.currentPlayer]) {
             case 2:
-              G.catTurn -= 6;
+              G.turns[3] += 6;
               break;
             case 3:
               G.hand[3] = [G.hand[3][2]];
@@ -363,8 +363,8 @@ export const TGP = {
     }
   },
   endIf: (G, ctx) => {
-    if (G.turn.reduce((a, b) => a + b, 0) === 44) {
-      G.turn = Array(ctx.numPlayers).fill(0);
+    if (G.turns[0] + G.turns[1] + G.turns[2] + G.turns[3] === 44) {
+      G.turns = Array(ctx.numPlayers).fill(0);
       G.catRound++;
       if (!G.ufoBuild) {
         return {winner: '3'};

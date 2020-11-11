@@ -18,7 +18,11 @@ export const CatBoard = (props) => {
         return i >= 2;
     }
     const dropCard = () => {
-
+        if (current === -1) {
+            alert("pls select a card");
+        } else {
+            props.moves.replaceCard(current);
+        }
     }
     // console.log(props);
     return (
@@ -80,6 +84,7 @@ export const CatBoard = (props) => {
                     <option value="2">P3</option>
                 </select>
                 <button onClick={playCard} disabled={!props.isActive || current === -1 || tg === -1 || props.G.draws[props.playerID]}>Play Card</button>
+                <button onClick={dropCard} disabled={!props.isActive}>Replace Card</button>
                 <button onClick={()=>props.events.endTurn()} disabled={!props.isActive}>End Turn</button>
             </div>
         </div>
