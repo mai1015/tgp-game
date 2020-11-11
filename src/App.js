@@ -6,7 +6,8 @@ import { SocketIO } from 'boardgame.io/multiplayer';
 import './App.css';
 
 const { protocol, hostname, port } = window.location;
-const server = `${protocol}//${hostname}:${port}`;
+let server = `${protocol}//${hostname}`;
+if (port) server += `:${port}`;
 
 const Board = Client({ game: TGP, board: GameBoard, numPlayers: 4, multiplayer: SocketIO({ server })});
 
