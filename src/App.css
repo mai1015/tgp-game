@@ -1,38 +1,31 @@
-.App {
-  text-align: center;
+#ufos .ufo-card, .cards div, .ant div{
+  float: left;
+  padding-right: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#ufos:after, .cards:after, .ant:after {
+  content: "";
+  clear: both;
+  display:table;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.action button {
+  margin-left: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.ufo-card button {
+  width: 320px;
 }
 
-.App-link {
-  color: #61dafb;
+.selected {
+  border: 1px dashed black;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+img{
+  width: 160px;
+}
+
+.player {
+  border: 1px solid black;
+  padding: 5px;
 }

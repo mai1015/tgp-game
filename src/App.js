@@ -1,25 +1,23 @@
-import logo from './logo.svg';
+import React from "react";
+import { Client } from 'boardgame.io/react';
+import { TGP } from './Game';
+import { GameBoard } from './Board';
+import { SocketIO } from 'boardgame.io/multiplayer';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const { protocol, hostname, port } = window.location;
+const server = `${protocol}//${hostname}:${port}`;
+
+const Board = Client({ game: TGP, board: GameBoard, numPlayers: 4, multiplayer: SocketIO({ server })});
+
+function App(props) {
+    let query = new URLSearchParams(window.location.search);
+    console.log(new URLSearchParams(window.location.search).get('test'));
+    return (
+        <div className="App">
+            <Board playerID={query.get('id')} matchID={query.get('mid')}/>
+        </div>
+    );
 }
 
 export default App;
