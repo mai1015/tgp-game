@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import {CatCardComponent} from "./CatCard";
-import {UFOComponent} from "./UFO";
-import {CardComponent} from "./Card";
 
 export const CatBoard = (props) => {
     const [tg, setTg] = useState(-1);
@@ -15,7 +13,7 @@ export const CatBoard = (props) => {
         if (props.G.completed['0'] !== -1 ) i++;
         if (props.G.completed['1'] !== -1 ) i++;
         if (props.G.completed['2'] !== -1 ) i++;
-        return i >= 2;
+        return i >= 1;
     }
     const dropCard = () => {
         if (current === -1) {

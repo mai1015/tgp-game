@@ -157,8 +157,6 @@ function updateResource(hand) {
   return ret;
 }
 
-
-
 export const TGP = {
   setup: (ctx) => ({
     matCard: genCards(d.MAT, d.NUM_MAT, d.TYPE_MAT, d.CARD_MAT, {type: 'MAT'}),
@@ -180,12 +178,6 @@ export const TGP = {
     skip: Array(ctx.numPlayers).fill(false),
     skillUsed: Array(ctx.numPlayers).fill(0)
   }),
-
-  events: {
-    onTurnBegin: (G, ctx) => {
-      // console.log("triggered global");
-    }
-  },
   phases: {
     chooseUfo: {
       turn: {
@@ -278,17 +270,20 @@ export const TGP = {
           // } else {
           //   return INVALID_MOVE;
           // }
-          G.hand[ctx.currentPlayer].push(G.appCard.pop());
+          if (G.appCard.length > 0)
+            G.hand[ctx.currentPlayer].push(G.appCard.pop());
           G.draws[ctx.currentPlayer] = true;
           ctx.events.endTurn();
         },
         drawAnt: (G, ctx) => {
+          if (G.antCard.length < 1) return INVALID_MOVE;
           if (G.draws[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
           G.antHand[ctx.currentPlayer].push(G.antCard.pop());
           G.draws[ctx.currentPlayer] = true;
           ctx.events.endTurn();
         },
         drawJunk: (G, ctx) => {
+          if (G.matCard.length < 1) return INVALID_MOVE;
           if (G.draws[ctx.currentPlayer] || ctx.currentPlayer === '3') return INVALID_MOVE;
           G.hand[ctx.currentPlayer].push(G.matCard.pop())
           G.hand[ctx.currentPlayer].sort(v => v.value);

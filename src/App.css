@@ -17,10 +17,6 @@
   width: 300px;
 }
 
-.selected {
-  border: 1px dashed black;
-}
-
 img{
   width: 150px;
 }
@@ -45,4 +41,18 @@ img{
   background-color: white;
   width: 100%;
   padding-bottom: 10px;
+}
+
+.card {
+  margin-bottom: 10px;
+}
+
+.board .cards {
+  height: 200px;
+  overflow-x: scroll;
+}
+
+.selected {
+  border: 1px dashed black;
+  margin-bottom: 8px;
 }
